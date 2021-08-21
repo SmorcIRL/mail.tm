@@ -16,6 +16,7 @@
         <Version>1.0.1</Version>
         <Authors>SmorcIRL</Authors>
         <Company />
+        <PackageVersion>1.0.2</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,7 +26,7 @@
     <ItemGroup>
       <None Include="..\..\misc\nuget_icon.png">
         <Pack>True</Pack>
-        <PackagePath/>
+        <PackagePath />
       </None>
     </ItemGroup>
 
