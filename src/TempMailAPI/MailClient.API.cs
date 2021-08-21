@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using SmorcIRL.TempMail.Helpers;
@@ -217,6 +218,25 @@ namespace SmorcIRL.TempMail
             return result.Data;
         }
 
+        public async Task<MessageInfo[]> GetAllMessages()
+        {
+            var list = new List<MessageInfo>();
+
+            for (var i = 1; i < int.MaxValue; i++)
+            {
+                var fromPage = await GetMessages(i);
+
+                if (!fromPage.Any())
+                {
+                    break;
+                }
+
+                list.AddRange(fromPage);
+            }
+
+            return list.ToArray();
+        }
+        
         public async Task<MessageInfo> GetMessage(string id)
         {
             Ensure.IsPresent(id, nameof(id));
