@@ -7,15 +7,26 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>mail.tm</Title>
         <Description>A mail.tm API wrapper for .NET</Description>
-        <PackageLicenseUrl>https://licenses.nuget.org/MIT</PackageLicenseUrl>
-        <PackageIconUrl>https://github.com/SmorcIRL/mail.tm/blob/master/misc/nuget_icon.png</PackageIconUrl>
         <RepositoryUrl>https://github.com/SmorcIRL/mail.tm</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>mail.tm mailtm temp-mail tempmail mail email api wrapper temporary temp</PackageTags>
+        <PackageIcon>nuget_icon.png</PackageIcon>
+        <PackageIconUrl />
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Version>1.0.1</Version>
+        <Authors>SmorcIRL</Authors>
+        <Company />
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\..\misc\nuget_icon.png">
+        <Pack>True</Pack>
+        <PackagePath/>
+      </None>
     </ItemGroup>
 
 </Project>
