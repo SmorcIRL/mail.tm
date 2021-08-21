@@ -4,6 +4,14 @@
         <AssemblyName>SmorcIRL.TempMail</AssemblyName>
         <RootNamespace>SmorcIRL.TempMail</RootNamespace>
         <TargetFramework>netstandard1.1</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>mail.tm</Title>
+        <Description>A mail.tm API wrapper for .NET</Description>
+        <PackageLicenseUrl>https://licenses.nuget.org/MIT</PackageLicenseUrl>
+        <PackageIconUrl>https://github.com/SmorcIRL/mail.tm/blob/master/misc/nuget_icon.png</PackageIconUrl>
+        <RepositoryUrl>https://github.com/SmorcIRL/mail.tm</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>mail.tm mailtm temp-mail tempmail mail email api wrapper temporary temp</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
