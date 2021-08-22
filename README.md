@@ -17,7 +17,7 @@ All API interaction is asynchronous. Some API calls require to be authorized and
 
 Interaction with account API is performed through a `MailClient` instance. You can simply register like this
 ```C#
-MailClient client = await MailClient.Login("pepethefrog@sad.me", "*password*");
+MailClient client = await MailClient.Register("pepethefrog@sad.me", "*password*");
 ```
 
 Make sure you specify the domain correctly - domains list is limited by the service. You can get an actual list using
