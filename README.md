@@ -1,5 +1,5 @@
 # mail.tm
-A [mail.tm](https://mail.tm) API wrapper for .Net
+A [mail.tm](https://mail.tm) / [mail.gw](https://mail.gw) API wrapper for .NET. These services have identical api at the moment, but this might change in future.
 
 ## Installation
 
@@ -10,14 +10,18 @@ Available as a [NuGet](https://www.nuget.org/packages/SmorcIRL.TempMail).
 ## Getting started
 
 ### Introduction
-
-All API interaction is asynchronous. Some API calls require to be authorized and some are not. The first group is represented by static methods of `MailClient` class, the second - with its instance methods. Having a `MailClient` instance, you can get its authorization token via `BearerToken` property, that may be helpfull for manual debbuging using [Swagger](https://api.mail.tm/docs). Also you can specify the base API address using `MailClient.ApiUri` property, by default it references to https://api.mail.tm.
+`mail.tm` is a great temporary/disposable mail service, and also recently was launched a new 10 minute mail service called `mail.gw`. As I said, these two services have identical api, so all told about `mail.tm` will be true for `mail.gw` as well. Basically API calls require authorization, but some are not (getting domains info, for example). Having an authorized `MailClient` instance, you can get its authorization token via `BearerToken` property, that may be helpfull for manual debbuging using [Swagger](https://api.mail.tm/docs).
 
 ### Register
 
 Interaction with account API is performed through a `MailClient` instance. You can simply register like this
 ```C#
-MailClient client = await MailClient.Register("pepethefrog@sad.me", "*password*");
+MailClient client = new MailClient();
+await client.Register("pepethefrog@sad.me", "*password*");
+```
+You can also specify the base api url. The default refer to [mail.tm](https://api.mail.tm), but if you want to use [mail.gw](https://api.mail.gw/), create a client like that
+```C#
+MailClient client = new MailClient(new Uri("https://api.mail.gw/"));
 ```
 
 Make sure you specify the domain correctly - domains list is limited by the service. You can get an actual list using
@@ -33,14 +37,14 @@ string domain = await MailClient.GetFirstAvailableDomainName();
 Now you can register using an overload that takes email and domain separately
 ```C#
 string domain = await MailClient.GetFirstAvailableDomainName();
-MailClient client = await MailClient.Register("pepethefrog", domain, "*password*");
+await client.Register("pepethefrog", domain, "*password*");
 ```
 
 ### Log in
 
 If you already have an account, you can log in using your creds
 ```C#
-MailClient client = await MailClient.Login("pepethefrog@sad.me", "*password*");
+await client.Login("pepethefrog@sad.me", "*password*");
 ```
 
 ### Get account info
@@ -56,7 +60,7 @@ After your work with the account is done, you can delete it
 ```C#
 await client.DeleteAccount();
 ```
-After that all API calls from this client instance will throw an error.
+After that you can reuse the client with new authorization via `Login()`/`Register()` if needed.
 
 ### Working with messages
 

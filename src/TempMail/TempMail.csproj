@@ -9,25 +9,30 @@
         <Description>A mail.tm API wrapper for .NET</Description>
         <RepositoryUrl>https://github.com/SmorcIRL/mail.tm</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageTags>mail.tm mailtm temp-mail tempmail mail email api wrapper temporary temp</PackageTags>
+        <PackageTags>mail.tm mail.gw mailtm mailgw temp-mail tempmail mail email api wrapper temporary temp</PackageTags>
         <PackageIcon>nuget_icon.png</PackageIcon>
-        <PackageIconUrl />
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>1.0.1</Version>
+        <Version>2.0.0</Version>
         <Authors>SmorcIRL</Authors>
         <Company />
-        <PackageVersion>1.0.2</PackageVersion>
+        <PackageVersion>2.0.0</PackageVersion>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    </ItemGroup>
 
     <ItemGroup>
       <None Include="..\..\misc\nuget_icon.png">
         <Pack>True</Pack>
-        <PackagePath />
+        <PackagePath>\</PackagePath>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>SmorcIRL.TempMail.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     </ItemGroup>
 
 </Project>

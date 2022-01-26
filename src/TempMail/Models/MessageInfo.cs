@@ -9,8 +9,7 @@ namespace SmorcIRL.TempMail.Models
 
         public string AccountId { get; set; }
 
-        [JsonProperty("msgid")]
-        public string MessageId { get; set; }
+        [JsonProperty("msgid")] public string MessageId { get; set; }
 
         public UserInfo From { get; set; }
 

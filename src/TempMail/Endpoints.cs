@@ -1,11 +1,12 @@
-﻿namespace SmorcIRL.TempMail.Helpers
+﻿using System;
+
+namespace SmorcIRL.TempMail
 {
     internal static class Endpoints
     {
-        public const string DefaultApiUri = "https://api.mail.tm";
+        public static readonly Uri DefaultApiUri = new Uri("https://api.mail.tm");
 
         public const string PostAccount = "/accounts";
-        public const string GetAccount = "/accounts/{0}";
         public const string DeleteAccount = "/accounts/{0}";
         public const string GetMe = "/me";
 

@@ -9,10 +9,10 @@ namespace SmorcIRL.TempMail.Helpers
 {
     internal static class HttpClientExtensions
     {
+        // HttpMethod.Patch is available only starting from .NET Standard 2.1
         private static readonly HttpMethod HttpPatchMethod = new HttpMethod("PATCH");
 
-
-        public static async Task<Result<TResponse>> GetAsync<TResponse>(this HttpClient client, Uri endpoint, string token = default)
+        public static async Task<Result<TResponse>> GetAsync<TResponse>(this HttpClient client, Uri endpoint, string token = default) where TResponse : class
         {
             using (var request = new HttpRequestMessage(HttpMethod.Get, endpoint))
             {
@@ -20,29 +20,21 @@ namespace SmorcIRL.TempMail.Helpers
 
                 using (var response = await client.SendAsync(request).ConfigureAwait(false))
                 {
-                    return new Result<TResponse>
-                    {
-                        Message = response,
-                        Data = await GetData<TResponse>(response),
-                    };
+                    return new Result<TResponse>(response, await GetData<TResponse>(response));
                 }
             }
         }
 
-        public static async Task<Result<TResponse>> PostAsync<TRequest, TResponse>(this HttpClient client, Uri endpoint, TRequest content, string token = default)
+        public static async Task<Result<TResponse>> PostAsync<TRequest, TResponse>(this HttpClient client, Uri endpoint, TRequest content, string token = default) where TResponse : class
         {
             using (var request = new HttpRequestMessage(HttpMethod.Post, endpoint))
             {
                 SetAuthorizationHeader(request, token);
-                SetContent(request, content);
-
+                SetContent(request, content, "application/json");
+                
                 using (var response = await client.SendAsync(request).ConfigureAwait(false))
                 {
-                    return new Result<TResponse>
-                    {
-                        Message = response,
-                        Data = await GetData<TResponse>(response),
-                    };
+                    return new Result<TResponse>(response, await GetData<TResponse>(response));
                 }
             }
         }
@@ -55,7 +47,7 @@ namespace SmorcIRL.TempMail.Helpers
 
                 using (var response = await client.SendAsync(request).ConfigureAwait(false))
                 {
-                    return new Result { Message = response };
+                    return new Result(response);
                 }
             }
         }
@@ -65,15 +57,14 @@ namespace SmorcIRL.TempMail.Helpers
             using (var request = new HttpRequestMessage(HttpPatchMethod, endpoint))
             {
                 SetAuthorizationHeader(request, token);
-                SetContent(request, content);
-
+                SetContent(request, content, "application/merge-patch+json");
+                
                 using (var response = await client.SendAsync(request).ConfigureAwait(false))
                 {
-                    return new Result { Message = response };
+                    return new Result(response);
                 }
             }
         }
-
 
         private static void SetAuthorizationHeader(HttpRequestMessage request, string token)
         {
@@ -83,10 +74,10 @@ namespace SmorcIRL.TempMail.Helpers
             }
         }
 
-        private static void SetContent<T>(HttpRequestMessage request, T content)
+        private static void SetContent<T>(HttpRequestMessage request, T content, string contentType)
         {
             var json = Serializer.Serialize(content);
-            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            request.Content = new StringContent(json, Encoding.UTF8, contentType);
         }
 
         private static async Task<T> GetData<T>(HttpResponseMessage response)
