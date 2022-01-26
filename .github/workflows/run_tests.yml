@@ -24,7 +24,7 @@ jobs:
 
     - name: Test
       env:
-        TM_API_URI: ${{ secrets.NUGET_API_KEY }}
+        TM_API_URI: ${{ secrets.TM_API_URI }}
         TM_LOGIN: ${{ secrets.TM_LOGIN }}
         TM_PASSWORD: ${{ secrets.TM_PASSWORD }}
         TM_SMTP_FROM: ${{ secrets.TM_SMTP_FROM }}
