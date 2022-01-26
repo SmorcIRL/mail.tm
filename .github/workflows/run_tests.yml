@@ -32,4 +32,4 @@ jobs:
         TM_SMTP_LOGIN: ${{ secrets.TM_SMTP_LOGIN }}
         TM_SMTP_PASSWORD: ${{ secrets.TM_SMTP_PASSWORD }}
         TM_SMTP_PORT: ${{ secrets.TM_SMTP_PORT }}       
-      run: dotnet test src/TempMail/TempMail.Tests.csproj --no-restore --verbosity normal
+      run: dotnet test src/TempMail.Tests/TempMail.Tests.csproj --no-restore --verbosity normal
