@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: Run Tests
 
 on:
   workflow_dispatch
@@ -17,7 +17,7 @@ jobs:
          dotnet-version: 6.0.1
       
     - name: Restore
-      run: dotnet restore src/TempMail.sln
+      run: dotnet restore src/TempMail.csproj
       
     - name: Build
       run: dotnet build src/TempMail.sln --configuration Release --no-restore
@@ -33,10 +33,3 @@ jobs:
         TM_SMTP_PASSWORD: ${{ secrets.TM_SMTP_PASSWORD }}
         TM_SMTP_PORT: ${{ secrets.TM_SMTP_PORT }}       
       run: dotnet test src/TempMail/TempMail.Tests.csproj --no-restore --verbosity normal
-    
-    - name: Pack
-      run: dotnet pack src/TempMail/TempMail.csproj --output nuget-packages --configuration Release
-    
-    - name: Publish
-      run: dotnet nuget push nuget-packages/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
-
