@@ -25,8 +25,8 @@ namespace SmorcIRL.TempMail.Tests
             var from = GetEnvironmentVariableOrThrow("TM_SMTP_FROM");
             var apiUri = GetEnvironmentVariableOrThrow("TM_API_URI");
             
-            _login = GetEnvironmentVariableOrThrow("TM_LOGIN");
-            _password = GetEnvironmentVariableOrThrow("TM_PASSWORD");
+            _login = Guid.NewGuid().ToString();
+            _password = Guid.NewGuid().ToString();
 
             _smtpClient = new SmtpClient
             {
