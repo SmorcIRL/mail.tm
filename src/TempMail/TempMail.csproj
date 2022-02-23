@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <AssemblyName>SmorcIRL.TempMail</AssemblyName>
@@ -12,10 +12,10 @@
         <PackageTags>mail.tm mail.gw mailtm mailgw temp-mail tempmail mail email api wrapper temporary temp</PackageTags>
         <PackageIcon>nuget_icon.png</PackageIcon>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>2.0.0</Version>
+        <Version>2.0.1</Version>
         <Authors>SmorcIRL</Authors>
         <Company />
-        <PackageVersion>2.0.0</PackageVersion>
+        <PackageVersion>2.0.1</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -32,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
 </Project>
