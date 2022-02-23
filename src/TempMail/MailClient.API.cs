@@ -14,7 +14,7 @@ namespace SmorcIRL.TempMail
             Ensure.IsPresent(fullAddress, nameof(fullAddress));
             Ensure.IsPresent(password, nameof(password));
 
-            var result = await HttpClient.PostAsync<GetTokenRequest, TokenInfo>(FormatUri(Endpoints.PostToken), new GetTokenRequest
+            var result = await _httpClient.PostAsync<GetTokenRequest, TokenInfo>(FormatUri(Endpoints.PostToken), new GetTokenRequest
             {
                 Address = fullAddress,
                 Password = password,
@@ -32,7 +32,7 @@ namespace SmorcIRL.TempMail
             Ensure.IsPresent(fullAddress, nameof(fullAddress));
             Ensure.IsPresent(password, nameof(password));
 
-            var createAccountResult = await HttpClient.PostAsync<CreateAccountRequest, AccountInfo>(FormatUri(Endpoints.PostAccount), new CreateAccountRequest
+            var createAccountResult = await _httpClient.PostAsync<CreateAccountRequest, AccountInfo>(FormatUri(Endpoints.PostAccount), new CreateAccountRequest
             {
                 Address = fullAddress,
                 Password = password,
@@ -40,7 +40,7 @@ namespace SmorcIRL.TempMail
 
             createAccountResult.Message.EnsureSuccessStatusCode();
 
-            var tokenResult = await HttpClient.PostAsync<GetTokenRequest, TokenInfo>(FormatUri(Endpoints.PostToken), new GetTokenRequest
+            var tokenResult = await _httpClient.PostAsync<GetTokenRequest, TokenInfo>(FormatUri(Endpoints.PostToken), new GetTokenRequest
             {
                 Address = fullAddress,
                 Password = password,
@@ -66,7 +66,7 @@ namespace SmorcIRL.TempMail
 
         public async Task<AccountInfo> GetAccountInfo()
         {
-            var result = await HttpClient
+            var result = await _httpClient
                 .GetAsync<AccountInfo>(FormatUri(Endpoints.GetMe), BearerToken)
                 .ConfigureAwait(false);
 
@@ -82,7 +82,7 @@ namespace SmorcIRL.TempMail
                 return;
             }
 
-            var result = await HttpClient
+            var result = await _httpClient
                 .DeleteAsync(FormatUri(Endpoints.DeleteAccount, AccountId), BearerToken)
                 .ConfigureAwait(false);
 
@@ -97,7 +97,7 @@ namespace SmorcIRL.TempMail
 
         public async Task<DomainInfo[]> GetAvailableDomains()
         {
-            var result = await HttpClient
+            var result = await _httpClient
                 .GetAsync<DomainInfo[]>(FormatUri(Endpoints.GetDomains))
                 .ConfigureAwait(false);
 
@@ -110,7 +110,7 @@ namespace SmorcIRL.TempMail
         {
             Ensure.IsPresent(id, nameof(id));
 
-            var result = await HttpClient
+            var result = await _httpClient
                 .GetAsync<DomainInfo>(FormatUri(Endpoints.GetDomain, id))
                 .ConfigureAwait(false);
 
@@ -132,7 +132,7 @@ namespace SmorcIRL.TempMail
         {
             Ensure.IsPositive(page, nameof(page));
 
-            var result = await HttpClient
+            var result = await _httpClient
                 .GetAsync<MessageInfo[]>(FormatUri(Endpoints.GetMessages, page), BearerToken)
                 .ConfigureAwait(false);
 
@@ -164,7 +164,7 @@ namespace SmorcIRL.TempMail
         {
             Ensure.IsPresent(id, nameof(id));
 
-            var result = await HttpClient
+            var result = await _httpClient
                 .GetAsync<MessageInfo>(FormatUri(Endpoints.GetMessage, id), BearerToken)
                 .ConfigureAwait(false);
 
@@ -177,7 +177,7 @@ namespace SmorcIRL.TempMail
         {
             Ensure.IsPresent(id, nameof(id));
 
-            var result = await HttpClient
+            var result = await _httpClient
                 .DeleteAsync(FormatUri(Endpoints.DeleteMessage, id), BearerToken)
                 .ConfigureAwait(false);
 
@@ -188,7 +188,7 @@ namespace SmorcIRL.TempMail
         {
             Ensure.IsPresent(id, nameof(id));
 
-            var result = await HttpClient
+            var result = await _httpClient
                 .GetAsync<MessageSource>(FormatUri(Endpoints.GetSource, id), BearerToken)
                 .ConfigureAwait(false);
 
@@ -201,7 +201,7 @@ namespace SmorcIRL.TempMail
         {
             Ensure.IsPresent(id, nameof(id));
 
-            var result = await HttpClient
+            var result = await _httpClient
                 .PatchAsync(FormatUri(Endpoints.PatchMessage, id), new UpdateMessageRequest { Seen = seen }, BearerToken)
                 .ConfigureAwait(false);
 

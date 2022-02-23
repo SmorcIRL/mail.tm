@@ -6,15 +6,22 @@ namespace SmorcIRL.TempMail
 {
     public sealed partial class MailClient
     {
-        private static readonly HttpClient HttpClient;
+        private static readonly HttpClient GlobalHttpClient;
 
         static MailClient()
         {
-            HttpClient = new HttpClient();
-            HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            GlobalHttpClient = new HttpClient();
+            SetupHttpClient(GlobalHttpClient);
+        }
+
+        private static void SetupHttpClient(HttpClient httpClient)
+        {
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         //========================================//
+
+        private readonly HttpClient _httpClient;
 
         public Uri ApiUri { get; }
 
@@ -26,10 +33,21 @@ namespace SmorcIRL.TempMail
 
         public MailClient() : this(Endpoints.DefaultApiUri)
         {
+
         }
 
-        public MailClient(Uri apiUri)
+        public MailClient(Uri apiUri) : this(GlobalHttpClient, apiUri)
         {
+
+        }
+
+        public MailClient(HttpClient httpClient, Uri apiUri)
+        {  
+            if (httpClient == null)
+            {
+                throw new ArgumentNullException(nameof(httpClient));
+            }
+
             if (apiUri == null)
             {
                 throw new ArgumentNullException(nameof(apiUri));
@@ -40,7 +58,13 @@ namespace SmorcIRL.TempMail
                 throw new FormatException("Invalid api uri format");
             }
 
+            if (httpClient != GlobalHttpClient)
+            {
+                SetupHttpClient(httpClient);
+            }
+
             ApiUri = apiUri;
+            _httpClient = httpClient;
         }
 
         private Uri FormatUri(string endpoint, params object[] args)

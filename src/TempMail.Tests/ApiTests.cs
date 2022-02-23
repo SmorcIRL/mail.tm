@@ -43,7 +43,14 @@ namespace SmorcIRL.TempMail.Tests
         public void Dispose()
         {   
             _smtpClient.Dispose();
-            _mailClient.DeleteAccount();
+
+            try
+            {
+                _mailClient.DeleteAccount().Wait();
+            }
+            catch
+            {
+            }
         }
 
         private static string GetEnvironmentVariableOrThrow(string variable)
