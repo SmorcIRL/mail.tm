@@ -26,17 +26,17 @@ MailClient client = new MailClient(new Uri("https://api.mail.gw/"));
 
 Make sure you specify the domain correctly - domains list is limited by the service. You can get an actual list using
 ```C#
-DomainInfo[] domains = await MailClient.GetAvailableDomains();
+DomainInfo[] domains = await client.GetAvailableDomains();
 ```
 
 If you only need to get any valid domain name for you account
 ```C#
-string domain = await MailClient.GetFirstAvailableDomainName();
+string domain = await client.GetFirstAvailableDomainName();
 ```
 
 Now you can register using an overload that takes email and domain separately
 ```C#
-string domain = await MailClient.GetFirstAvailableDomainName();
+string domain = await client.GetFirstAvailableDomainName();
 await client.Register("pepethefrog", domain, "*password*");
 ```
 
