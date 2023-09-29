@@ -189,5 +189,22 @@ namespace SmorcIRL.TempMail.Tests
         
             Assert.ThrowsAsync<HttpRequestException>(async () => await _mailClient.Login(info.Address, _password));
         }
+
+        [Test, Order(7)]
+        public async Task LoginAccountWithAddressUpperTest()
+        {
+            await Task.Delay(TimeSpan.FromSeconds(10));
+
+            var address = $"{_login.ToUpper()}@{await _mailClient.GetFirstAvailableDomainName()}";
+
+            Assert.ThrowsAsync<HttpRequestException>(async () => await _mailClient.Login(address, _password));
+
+            await _mailClient.Register(address, _password);
+            await _mailClient.Login(_mailClient.Email, _password);
+
+            var info = await _mailClient.GetAccountInfo();
+
+            Assert.AreEqual(address.ToLower(), info.Address);
+        }
     }
 }
