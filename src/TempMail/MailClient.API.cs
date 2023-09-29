@@ -40,6 +40,7 @@ namespace SmorcIRL.TempMail
 
             createAccountResult.Message.EnsureSuccessStatusCode();
 
+            fullAddress = createAccountResult.Data.Address;
             var tokenResult = await _httpClient.PostAsync<GetTokenRequest, TokenInfo>(FormatUri(Endpoints.PostToken), new GetTokenRequest
             {
                 Address = fullAddress,
