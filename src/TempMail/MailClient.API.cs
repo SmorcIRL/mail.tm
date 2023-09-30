@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SmorcIRL.TempMail.Helpers;
@@ -14,6 +15,8 @@ namespace SmorcIRL.TempMail
             Ensure.IsPresent(fullAddress, nameof(fullAddress));
             Ensure.IsPresent(password, nameof(password));
 
+            fullAddress = fullAddress.ToLower();
+
             var result = await _httpClient.PostAsync<GetTokenRequest, TokenInfo>(FormatUri(Endpoints.PostToken), new GetTokenRequest
             {
                 Address = fullAddress,
@@ -27,10 +30,27 @@ namespace SmorcIRL.TempMail
             BearerToken = result.Data.Token;
         }
 
+        public async Task LoginWithToken(string bearerToken)
+        {
+            Ensure.IsPresent(bearerToken, nameof(bearerToken));
+
+            var result = await _httpClient
+                .GetAsync<AccountInfo>(FormatUri(Endpoints.GetMe), bearerToken)
+                .ConfigureAwait(false);
+
+            result.Message.EnsureSuccessStatusCode();
+
+            Email = result.Data.Address;
+            AccountId = result.Data.Id;
+            BearerToken = bearerToken;
+        }
+
         public async Task Register(string fullAddress, string password)
         {
             Ensure.IsPresent(fullAddress, nameof(fullAddress));
             Ensure.IsPresent(password, nameof(password));
+
+            fullAddress = fullAddress.ToLower();
 
             var createAccountResult = await _httpClient.PostAsync<CreateAccountRequest, AccountInfo>(FormatUri(Endpoints.PostAccount), new CreateAccountRequest
             {
@@ -40,7 +60,6 @@ namespace SmorcIRL.TempMail
 
             createAccountResult.Message.EnsureSuccessStatusCode();
 
-            fullAddress = createAccountResult.Data.Address;
             var tokenResult = await _httpClient.PostAsync<GetTokenRequest, TokenInfo>(FormatUri(Endpoints.PostToken), new GetTokenRequest
             {
                 Address = fullAddress,
@@ -62,7 +81,19 @@ namespace SmorcIRL.TempMail
 
             await Register($"{address}@{domain}", password).ConfigureAwait(false);
         }
-
+        
+        public async Task GenerateAccount(string password = null)
+        {
+            await Register
+            (
+                Guid.NewGuid().ToString(),
+                await GetFirstAvailableDomainName(),
+                string.IsNullOrEmpty(password) || string.IsNullOrWhiteSpace(password) 
+                    ? Guid.NewGuid().ToString() 
+                    : password
+            );
+        }   
+        
         //========================================//
 
         public async Task<AccountInfo> GetAccountInfo()
