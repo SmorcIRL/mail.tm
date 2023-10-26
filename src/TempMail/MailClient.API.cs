@@ -192,12 +192,12 @@ namespace SmorcIRL.TempMail
             return list.ToArray();
         }
 
-        public async Task<MessageInfo> GetMessage(string id)
+        public async Task<MessageDetailInfo> GetMessage(string id)
         {
             Ensure.IsPresent(id, nameof(id));
 
             var result = await _httpClient
-                .GetAsync<MessageInfo>(FormatUri(Endpoints.GetMessage, id), BearerToken)
+                .GetAsync<MessageDetailInfo>(FormatUri(Endpoints.GetMessage, id), BearerToken)
                 .ConfigureAwait(false);
 
             result.Message.EnsureSuccessStatusCode();
