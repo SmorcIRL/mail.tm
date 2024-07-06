@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace SmorcIRL.TempMail.Models
 {
@@ -28,8 +27,5 @@ namespace SmorcIRL.TempMail.Models
         
         [JsonProperty("downloadUrl")] 
         public string DownloadUrl { get; set; }
-        
-
-        
     }
 }
