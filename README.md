@@ -79,9 +79,9 @@ MessageInfo[] messages = await client.GetAllMessages();
 MessageInfo[] messages = await client.GetMessages(*page*);
 ```
 
-- Get message info by id
+- Get message details by id
 ```C#
-MessageInfo message = await client.GetMessage("*id*");
+MessageDetailInfo message = await client.GetMessage("*id*");
 ```
 
 - Get message source
