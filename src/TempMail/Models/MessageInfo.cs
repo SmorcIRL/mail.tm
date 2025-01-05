@@ -41,6 +41,9 @@ namespace SmorcIRL.TempMail.Models
         [JsonProperty("downloadUrl")] 
         public string DownloadUrl { get; set; }
 
+        [JsonProperty("sourceUrl")]
+        public string SourceUrl { get; set; }
+
         [JsonProperty("createdAt")] 
         public DateTime CreatedAt { get; set; }
 
