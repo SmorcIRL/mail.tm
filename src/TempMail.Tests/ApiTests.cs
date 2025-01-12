@@ -113,7 +113,7 @@ namespace SmorcIRL.TempMail.Tests
             messages = await _mailClient.GetMessages(1);
             Assert.IsEmpty(messages);
 
-            const string body = "fbd49602-39ee-4fea-b555-c4796d256a2d";
+            string body = Guid.NewGuid().ToString();
             await _smtpClient.SendMailAsync(new MailMessage(_from, new MailAddress(_mailClient.Email))
             {
                 Body = body,
@@ -128,8 +128,11 @@ namespace SmorcIRL.TempMail.Tests
 
             var source = await _mailClient.GetMessageSource(message.Id);
             Assert.IsTrue(source.Data.Contains(body));
-            
+
             var messageById = await _mailClient.GetMessage(message.Id);
+
+            Assert.IsTrue(messageById.BodyText.Contains(body));
+            Assert.IsTrue(messageById.BodyHtml.First().Contains(body));
 
             Assert.AreEqual(message.Id, messageById.Id);
             Assert.AreEqual(message.MessageId, messageById.MessageId);
