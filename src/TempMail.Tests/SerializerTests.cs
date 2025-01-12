@@ -16,15 +16,15 @@ namespace SmorcIRL.TempMail.Tests
                 Property_3 = "3",
             });
             
-            Assert.True(json.Contains("property_1"));
-            Assert.True(json.Contains("property_2"));
-            Assert.True(json.Contains("property_3_Alias"));
+            Assert.That(json.Contains("property_1"), Is.True);
+            Assert.That(json.Contains("property_2"), Is.True);
+            Assert.That(json.Contains("property_3_Alias"), Is.True);
             
             var model = Serializer.Deserialize<TestCaseModel>("{Property_1: 1, property_2: 2, property_3_Alias: \"3\"}");
             
-            Assert.AreEqual("1", model.Property_1);
-            Assert.AreEqual("2", model.Property_2);
-            Assert.AreEqual("3", model.Property_3);
+            Assert.That("1", Is.EqualTo(model.Property_1));
+            Assert.That("2", Is.EqualTo(model.Property_2));
+            Assert.That("3", Is.EqualTo(model.Property_3));
         }
         
         private class TestCaseModel

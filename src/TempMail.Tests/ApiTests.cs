@@ -69,20 +69,20 @@ namespace SmorcIRL.TempMail.Tests
             var client = new MailClient();
      
             var domains = await client.GetAvailableDomains();
-     
-            Assert.IsNotEmpty(domains);
+
+            Assert.That(domains, Is.Not.Empty);
      
             var domainFromList = domains[0];
             var domain = await client.GetDomain(domainFromList.Id);
      
-            Assert.AreEqual(domainFromList.Id, domain.Id);
-            Assert.AreEqual(domainFromList.Domain, domain.Domain);
-            Assert.AreEqual(domainFromList.CreatedAt, domain.CreatedAt);
-            Assert.AreEqual(domainFromList.IsActive, domain.IsActive);
-            Assert.AreEqual(domainFromList.IsPrivate, domain.IsPrivate);
+            Assert.That(domainFromList.Id, Is.EqualTo(domain.Id));
+            Assert.That(domainFromList.Domain, Is.EqualTo(domain.Domain));
+            Assert.That(domainFromList.CreatedAt, Is.EqualTo(domain.CreatedAt));
+            Assert.That(domainFromList.IsActive, Is.EqualTo(domain.IsActive));
+            Assert.That(domainFromList.IsPrivate, Is.EqualTo(domain.IsPrivate));
      
             var firstAvailableDomainName = await client.GetFirstAvailableDomainName();
-            Assert.IsTrue(domains.Any(x => x.Domain == firstAvailableDomainName));
+            Assert.That(domains.Any(x => x.Domain == firstAvailableDomainName), Is.True);
         }
         
         [Test, Order(2)]
@@ -99,7 +99,7 @@ namespace SmorcIRL.TempMail.Tests
                 
             var info = await _mailClient.GetAccountInfo();
 
-            Assert.AreEqual(address, info.Address);
+            Assert.That(address, Is.EqualTo(info.Address));
         }
         
         [Test, Order(3)]
@@ -108,12 +108,12 @@ namespace SmorcIRL.TempMail.Tests
             await Task.Delay(TimeSpan.FromSeconds(10));
             
             var messages = await _mailClient.GetAllMessages();
-            Assert.IsEmpty(messages);
+            Assert.That(messages, Is.Empty);
 
             messages = await _mailClient.GetMessages(1);
-            Assert.IsEmpty(messages);
+            Assert.That(messages, Is.Empty);
 
-            string body = Guid.NewGuid().ToString();
+            var body = Guid.NewGuid().ToString();
             await _smtpClient.SendMailAsync(new MailMessage(_from, new MailAddress(_mailClient.Email))
             {
                 Body = body,
@@ -122,36 +122,36 @@ namespace SmorcIRL.TempMail.Tests
             await Task.Delay(TimeSpan.FromSeconds(10));
 
             messages = await _mailClient.GetAllMessages();
-            Assert.IsTrue(messages.Length == 1);
+            Assert.That(messages.Length == 1, Is.True);
 
             var message = messages.First();
 
             var source = await _mailClient.GetMessageSource(message.Id);
-            Assert.IsTrue(source.Data.Contains(body));
+            Assert.That(source.Data.Contains(body), Is.True);
 
             var messageById = await _mailClient.GetMessage(message.Id);
 
-            Assert.IsTrue(messageById.BodyText.Contains(body));
-            Assert.IsTrue(messageById.BodyHtml.First().Contains(body));
+            Assert.That(messageById.BodyText.Contains(body), Is.True);
+            Assert.That(messageById.BodyHtml.First().Contains(body), Is.True);
 
-            Assert.AreEqual(message.Id, messageById.Id);
-            Assert.AreEqual(message.MessageId, messageById.MessageId);
-            Assert.AreEqual(message.AccountId, messageById.AccountId);
-            Assert.AreEqual(message.CreatedAt, messageById.CreatedAt);
-            Assert.IsFalse(messageById.Seen);
+            Assert.That(message.Id, Is.EqualTo(messageById.Id));
+            Assert.That(message.MessageId, Is.EqualTo(messageById.MessageId));
+            Assert.That(message.AccountId, Is.EqualTo(messageById.AccountId));
+            Assert.That(message.CreatedAt, Is.EqualTo(messageById.CreatedAt));
+            Assert.That(messageById.Seen, Is.False);
 
             await _mailClient.MarkMessageAsSeen(message.Id, true);
 
             await Task.Delay(TimeSpan.FromSeconds(10));
             messageById = await _mailClient.GetMessage(message.Id);
-            Assert.IsTrue(messageById.Seen);
+            Assert.That(messageById.Seen, Is.True);
 
             await _mailClient.MarkMessageAsSeen(message.Id, false);
 
             await Task.Delay(TimeSpan.FromSeconds(10));
             messageById = await _mailClient.GetMessage(message.Id);
-            Assert.IsFalse(messageById.Seen);
-            Assert.AreNotEqual(message.UpdatedAt, messageById.UpdatedAt);
+            Assert.That(messageById.Seen, Is.False);
+            Assert.That(message.UpdatedAt, Is.Not.EqualTo(messageById.UpdatedAt));
 
             await _mailClient.DeleteMessage(message.Id);
             Assert.ThrowsAsync<HttpRequestException>(async () => await _mailClient.GetMessage(message.Id));
@@ -177,8 +177,8 @@ namespace SmorcIRL.TempMail.Tests
             Assert.ThrowsAsync<HttpRequestException>(async () => await _mailClient.Login("wrong", "creds"));
             var info2 = await _mailClient.GetAccountInfo();
 
-            Assert.AreEqual(info1.Id, info2.Id);
-            Assert.AreEqual(info1.Address, info2.Address);
+            Assert.That(info1.Id, Is.EqualTo(info2.Id));
+            Assert.That(info1.Address, Is.EqualTo(info2.Address));
         }
         
         [Test, Order(6)]
