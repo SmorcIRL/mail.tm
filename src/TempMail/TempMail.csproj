@@ -12,10 +12,10 @@
         <PackageTags>mail.tm mail.gw mailtm mailgw temp-mail tempmail mail email api wrapper temporary temp</PackageTags>
         <PackageIcon>nuget_icon.png</PackageIcon>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>2.1.0</Version>
+        <Version>2.2.0</Version>
         <Authors>SmorcIRL</Authors>
         <Company />
-        <PackageVersion>2.1.0</PackageVersion>
+        <PackageVersion>2.2.0</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
