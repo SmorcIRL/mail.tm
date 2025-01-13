@@ -1,0 +1,30 @@
+name: Continuous Integration (Skip Tests)
+
+on:
+  workflow_dispatch
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+         dotnet-version: 8.0.x
+      
+    - name: Restore
+      run: dotnet restore src/TempMail.sln
+      
+    - name: Build
+      run: dotnet build src/TempMail.sln --configuration Release --no-restore
+
+    - name: Pack
+      run: dotnet pack src/TempMail/TempMail.csproj --output nuget-packages --configuration Release
+    
+    - name: Publish
+      run: dotnet nuget push nuget-packages/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+
